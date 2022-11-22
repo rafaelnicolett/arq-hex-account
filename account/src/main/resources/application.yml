@@ -12,7 +12,7 @@ management:
 
 spring:
   application:
-    name: lab-conta-corrente
+    name: account
   datasource:
     url: jdbc:h2:mem:lab_account;DB_CLOSE_DELAY=-1;DATABASE_TO_UPPER=false
     username: sa
