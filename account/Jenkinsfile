@@ -4,13 +4,13 @@ pipeline {
     triggers {
         pollSCM '* * * * *'
     }
+    tools {
+        maven 'Maven 3.8.6'
+    }
     stages {
         stage('Build') {
             steps {
-                container ('maven') {
-                    sh 'mvn clean package'
-                    sh 'echo Build Success'
-                }
+                sh 'mvn clean package'
             }
         }
         stage('Build Docker image') {
