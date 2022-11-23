@@ -6,17 +6,20 @@ pipeline {
     }
     tools {
         maven 'Maven'
+        docker 'docker'
     }
     stages {
         stage('Build') {
             steps {
                 echo 'Start build pipeline'
+                sh 'cd /var/jenkins_home/workspace/pipeline-java-account/account'
                 sh 'mvn clean package'
                 echo 'Finish build pipeline'
             }
         }
         stage('Build Docker image') {
             steps {
+                sh 'cd /var/jenkins_home/workspace/pipeline-java-account/account'
                 sh 'docker build rafaelnicoleti/hexagonal-java-account:latest .'
             }
         }
