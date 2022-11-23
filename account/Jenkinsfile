@@ -1,71 +1,28 @@
 #!groovy
-// Jenkinsfile (Declarative Pipeline)
-// Global Variable goes here
-// Pipeline block
 pipeline {
-// Agent block
-agent {
-   dockerfile true
+    agent any
+    triggers {
+        pollSCM '* * * * *'
+    }
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Build Docker image') {
+            steps {
+                sh 'docker build rafaelnicoleti/hexagonal-java-account:latest .'
+            }
+        }
+        stage('Push Docker image') {
+            environment {
+                DOCKER_HUB_LOGIN = credentials('dockerhub')
+            }
+            steps {
+                sh 'docker login --username=$DOCKER_HUB_LOGIN_USR --password=$DOCKER_HUB_LOGIN_PSW'
+                sh 'docker push rafaelnicoleti/hexagonal-java-account:latest'
+            }
+        }
+    }
 }
-options {
-   buildDiscarder(logRotator(numToKeepStr: '5'))
-   timestamps()
-}
-parameters {
-   string(name: "Branch_Name", defaultValue: 'main', description: 'A name of the Git branch that contain the jenkinfile code')
-   string(name: "Image_Name", defaultValue: 'rafaelnicoleti/hexagonal-java-account', description: 'A name of the image that you want to build')
-   string(name: "Image_Tag", defaultValue: 'latest', description: 'Image tag')
-   string(name: 'HTTP_PROXY', defaultValue: '<add the proxy details if the network is behind the proxy>', description: 'The proxy address to be used to connect to outside network when running docker build.')
-   string(name: 'HTTPS_PROXY', defaultValue: '<add the proxy details if the network is behind the proxy>', description: 'The proxy address to be used to connect to outside network when running docker build.')
-
-   booleanParam(name: "PushImage", defaultValue: false)
-}
-// Stage Block
-stages {// stage blocks
-   stage("Build docker images") {
-      steps {
-         script {
-            echo "Bulding docker images"
-            def buildArgs = """\
---build-arg HTTP_PROXY=${params.HTTP_PROXY} \
---build-arg HTTPS_PROXY=${params.HTTPS_PROXY} \
--f account/Dockerfile \
-."""
-            docker.build("${params.Image_Name}:${params.Image_Tag}", buildArgs)
-         }
-     }
-}
-stage("Push to Dockerhub") {
-   when {
-      equals expected: "true", actual: "${params.PushImage}"
-   }
-   steps {
-      script {
-         echo "Pushing the image to docker hub"
-         def localImage = "${params.Image_Name}:${params.Image_Tag}"
-         def repositoryName = "${localImage}"
-         sh "docker tag ${localImage} ${repositoryName} "
-         docker.withRegistry("", "dockerhub") {
-            def image = docker.image("${repositoryName}");
-            image.push()
-         }
-     }
-  }
-}}
-post {
-   always {
-      script {
-         echo "I am execute always"
-      }
-   }
-   success {
-      script {
-         echo "I am execute on success"
-      }
-   }
-   failure {
-      script {
-         echo "I am execute on failure"
-      }
-   }
-}}
