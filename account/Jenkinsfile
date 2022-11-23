@@ -5,6 +5,7 @@ pipeline {
         stage('Maven Install') {
           steps {
             sh 'mvn clean package'
+          }
         }
         stage('Docker Build') {
             agent any
