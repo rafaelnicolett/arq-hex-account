@@ -25,10 +25,7 @@ pipeline {
 //                 sh 'systemctl daemon-reload'
 //                 sh 'systemctl restart docker'
 //                 sh 'cd /var/jenkins_home/workspace/pipeline-java-account/account'
-                container('docker') {
-                    sh 'docker build -f /var/jenkins_home/workspace/pipeline-java-account/account/Dockerfile -t rafaelnicoleti/hexagonal-java-account:latest .'
-                }
-
+                sh 'docker build -f /var/jenkins_home/workspace/pipeline-java-account/account/Dockerfile -t rafaelnicoleti/hexagonal-java-account:latest .'
             }
         }
         stage('Push Docker image') {
