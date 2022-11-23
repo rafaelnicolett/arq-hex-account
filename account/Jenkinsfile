@@ -5,12 +5,14 @@ pipeline {
         pollSCM '* * * * *'
     }
     tools {
-        maven 'MAVEN_JENKINS'
+        maven 'Maven 3.8.6'
     }
     stages {
         stage('Build') {
             steps {
+                echo 'Start build pipeline'
                 sh 'mvn clean package'
+                echo 'Finish build pipeline'
             }
         }
         stage('Build Docker image') {
