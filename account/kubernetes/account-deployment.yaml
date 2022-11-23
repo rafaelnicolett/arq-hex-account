@@ -16,7 +16,6 @@ spec:
         app: account
     spec:
       containers:
-
         - name: account
           image: rafaelnicoleti/hexagonal-java-account:latest
           ports:
