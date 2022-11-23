@@ -1,3 +1,4 @@
+#!/bin/bash
 FROM openjdk
 VOLUME /tmp
 ARG JAR_FILE=target/*.jar
