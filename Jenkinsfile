@@ -1,8 +1,5 @@
-#!groovy
-
 pipeline {
-	agent none
-  stages {
+	agent none  stages {
   	stage('Maven Install') {
     	agent {
       	docker {
@@ -10,13 +7,22 @@ pipeline {
         }
       }
       steps {
-      	sh 'mvn clean package'
+      	sh 'mvn clean install'
       }
     }
     stage('Docker Build') {
     	agent any
       steps {
-      	sh 'docker build -t rafaelnicoleti/hexagonal-java-account:latest .'
+      	sh 'docker build -t shanem/spring-petclinic:latest .'
+      }
+    }
+    stage('Docker Push') {
+    	agent any
+      steps {
+      	withCredentials([usernamePassword(credentialsId: 'dockerhub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
+        	sh "docker login -u ${env.dockerHubUser} -p ${env.dockerHubPassword}"
+          sh 'docker push rafaelnicoleti/hexagonal-java-account:latest'
+        }
       }
     }
   }
