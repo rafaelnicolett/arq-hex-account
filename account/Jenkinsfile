@@ -13,7 +13,7 @@ pipeline {
             steps {
                 echo 'Start build pipeline'
                 sh 'cd /var/jenkins_home/workspace/pipeline-java-account/account'
-                sh 'mvn clean package'
+                sh 'mvn -f /var/jenkins_home/workspace/pipeline-java-account/account/pom.xml clean package'
                 echo 'Finish build pipeline'
             }
         }
