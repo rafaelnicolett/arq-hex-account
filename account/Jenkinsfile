@@ -19,7 +19,9 @@ pipeline {
         }
         stage('Build Docker image') {
             steps {
+                sh 'groupadd docker'
                 sh 'usermod -aG docker jenkins'
+                sh 'newgrp docker'
                 sh 'systemctl daemon-reload'
                 sh 'systemctl restart docker'
                 sh 'cd /var/jenkins_home/workspace/pipeline-java-account/account'
