@@ -29,7 +29,7 @@ stages {// stage blocks
             def buildArgs = """\
 --build-arg HTTP_PROXY=${params.HTTP_PROXY} \
 --build-arg HTTPS_PROXY=${params.HTTPS_PROXY} \
--f Dockerfile \
+-f account/Dockerfile \
 ."""
             docker.build("${params.Image_Name}:${params.Image_Tag}", buildArgs)
          }
