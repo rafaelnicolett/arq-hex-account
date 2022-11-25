@@ -1,6 +1,6 @@
 #!groovy
 pipeline {
-    agent any
+    agent 'Built-In Node'
     triggers {
         pollSCM '* * * * *'
     }
