@@ -1,6 +1,6 @@
 #!groovy
 pipeline {
-    agent { label 'Built-In Node' }
+    agent { label 'linux-manjaro' }
     triggers {
         pollSCM '* * * * *'
     }
