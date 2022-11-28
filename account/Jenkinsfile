@@ -8,7 +8,7 @@ pipeline {
         // https://github.com/jenkinsci/docker-commons-plugin/pull/77#discussion_r280910822
         // https://github.com/jenkinsci/docker-commons-plugin/pull/52
         maven 'Maven'
-        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' '18.09'
+        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker'
     }
     triggers {
         pollSCM '* * * * *'
