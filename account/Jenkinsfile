@@ -8,7 +8,7 @@ pipeline {
         // https://github.com/jenkinsci/docker-commons-plugin/pull/77#discussion_r280910822
         // https://github.com/jenkinsci/docker-commons-plugin/pull/52
         maven 'Maven'
-        docker-build-step 'docker-build-step'
+        'org.jenkinsci.plugins.docker.commons.tools.DockerTool' 'docker'
     }
     triggers {
         pollSCM '* * * * *'
@@ -23,7 +23,8 @@ pipeline {
         }
         stage('Build Docker image') {
             steps {
-                sh 'docker build -f /var/jenkins_home/workspace/pipeline-java-account/account/Dockerfile -t rafaelnicoleti/hexagonal-java-account:latest .'
+//                 sh 'docker build -f /var/jenkins_home/workspace/pipeline-java-account/account/Dockerfile -t rafaelnicoleti/hexagonal-java-account:latest .'
+                   docker.build -f /var/jenkins_home/workspace/pipeline-java-account/account/Dockerfile -t rafaelnicoleti/hexagonal-java-account:latest .
             }
         }
         stage('Push Docker image') {
