@@ -1,4 +1,7 @@
 #!/bin/bash
+USER root
+RUN groupadd -g docker  docker && usermod -aG docker jenkins
+USER jenkins
 FROM openjdk
 VOLUME /tmp
 ARG JAR_FILE=target/*.jar
